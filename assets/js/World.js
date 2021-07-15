@@ -8,7 +8,14 @@ export default class World {
 
     static player = Player;
 
-    static config = {};
+    static config = {
+        audio: {
+            /* Background audio */
+            src: '',
+            volume: 1,
+            repeat: true
+        }
+    };
 
     static paused = false;
 
@@ -17,8 +24,14 @@ export default class World {
 
     static init() {
 
+        /* Canvas options */
         this.cnv.width  = window.innerWidth;
         this.cnv.height = window.innerHeight;
+
+        /* Player */
+        this.player.y = this.cnv.height - 50 - this.player.height * this.player.scale;
+        this.player.x = 150;
+        this.player.setStatus('stand', this.cnv);
 
         this.listeners();
         this.loop();
@@ -46,6 +59,10 @@ export default class World {
         /* Ground */
         ctx.fillStyle = '#090909';
         ctx.fillRect(0, cnv.height - 50, cnv.width, cnv.height);
+
+        // Entities
+        /* Player */
+        this.player.render(ctx);
 
     }
 
