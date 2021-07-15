@@ -7,7 +7,8 @@ export default class Player {
 
     static scale = .8;
 
-    static _status = 'stand';
+    static _status   = 'stand';
+    static alternate = false;
 
     static spriteArea = {
         'shoot': { x: 0, y: 0, width: 220, height: 355 },
@@ -23,11 +24,14 @@ export default class Player {
 
     static health = 100;
     static speed = 5;
-    static jump = 100;
+    static jumpHeight = 100;
+    static jumping = false;
 
-    static texture = 'assets/media/images/sprites/man/sprite.png';
+    static texture = 'assets/media/images/sprites/man/sprite1.png';
 
-    static setStatus(status, cnv) {
+    static setStatus(status, cnv, alternate = this.alternate) {
+
+        if ( this.jumping && status !== 'hands_up' ) return false;
 
         this._status = status;
 
@@ -36,6 +40,8 @@ export default class Player {
 
         this.y = cnv.height - this.height * this.scale - 50;
 
+        this.alternate = alternate;
+
     }
 
     static render(ctx) {
@@ -43,14 +49,29 @@ export default class Player {
         const playerImage = new Image();
         playerImage.src = this.texture;
 
+        let offsetX = this.alternate ? this.spriteArea[this._status].x + 691 : this.spriteArea[this._status].x;
+
         ctx.drawImage(
             playerImage,
-            this.spriteArea[this._status].x,
+            offsetX,
             this.spriteArea[this._status].y,
             this.width, this.height,
             this.x, this.y,
             this.width * this.scale, this.height * this.scale
         );
+
+    }
+
+    static jump( cnv ) {
+
+        if (this.jumping) return false;
+        this.jumping = true;
+
+        this.setStatus('hands_up', cnv);
+
+        this.y -= this.jumpHeight;
+
+        setTimeout( () => this.jumping = false, 1000);
 
     }
 

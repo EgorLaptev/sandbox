@@ -36,7 +36,7 @@ export default class World {
 
         /* Player */
         this.player.y = this.cnv.height - 50 - this.player.height * this.player.scale;
-        this.player.setStatus('stand', this.cnv);
+        this.player.setStatus('stand', this.cnv, false);
 
         /* Controller */
         this.controller.init( this.player );
@@ -80,6 +80,24 @@ export default class World {
             this.cnv.width  = window.innerWidth;
             this.cnv.height = window.innerHeight;
         })
+
+        // Player control
+        Controller.default( () => {
+            this.player.setStatus('stand', this.cnv);
+        });
+
+        /* Left */
+        Controller.bind(65, () => {
+            this.player.setStatus( 'walk_2', this.cnv, true);
+            this.player.x -= this.player.speed;
+        });
+        /* Right */
+        Controller.bind(68, () => {
+            this.player.setStatus('walk_2', this.cnv, false);
+            this.player.x += this.player.speed;
+        });
+        /* Jump */
+        Controller.bind(32, () => this.player.jump( this.cnv ) );
 
     }
 

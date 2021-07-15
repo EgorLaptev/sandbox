@@ -5,6 +5,7 @@ export default class Controller {
     static controlled   = null;
     static _pressedKeys = [];
     static _binds       = [];
+    static _defaults    = [];
 
     static init(controlled) {
 
@@ -17,12 +18,22 @@ export default class Controller {
 
     }
 
+    /* Adding bind actions */
     static bind( keyCode, callback ) {
         this._binds.push({ keyCode: keyCode, callback });
     }
 
+    /* Adding default actions */
+    static default ( callback ) {
+        this._defaults.push( callback );
+    }
+
     static _watcher() {
 
+        // Default actions
+        for ( const def of Controller._defaults ) def();
+
+        // Actions on bind
         for ( const bind of Controller._binds )
             if ( Controller._pressedKeys[bind.keyCode] ) bind.callback();
 
