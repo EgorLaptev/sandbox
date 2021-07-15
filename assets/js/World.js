@@ -3,12 +3,18 @@
 
 
 import Player from "./Player.js";
+import Controller from "./Controller.js";
 
 export default class World {
 
     static player = Player;
+    static controller = Controller;
 
     static config = {
+        floor: {
+          height: 50,
+          color: '#090909'
+        },
         audio: {
             /* Background audio */
             src: '',
@@ -30,8 +36,10 @@ export default class World {
 
         /* Player */
         this.player.y = this.cnv.height - 50 - this.player.height * this.player.scale;
-        this.player.x = 150;
         this.player.setStatus('stand', this.cnv);
+
+        /* Controller */
+        this.controller.init( this.player );
 
         this.listeners();
         this.loop();
@@ -57,8 +65,8 @@ export default class World {
         ctx.clearRect(0, 0, cnv.width, cnv.height);
 
         /* Ground */
-        ctx.fillStyle = '#090909';
-        ctx.fillRect(0, cnv.height - 50, cnv.width, cnv.height);
+        ctx.fillStyle = this.config.floor.color;
+        ctx.fillRect(0, cnv.height - this.config.floor.height, cnv.width, cnv.height);
 
         // Entities
         /* Player */

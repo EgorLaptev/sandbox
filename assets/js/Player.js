@@ -2,7 +2,7 @@
 
 export default class Player {
 
-    static x;
+    static x = 150;
     static y;
 
     static scale = .8;
@@ -22,7 +22,7 @@ export default class Player {
     static height = 355;
 
     static health = 100;
-    static speed = 2;
+    static speed = 5;
     static jump = 100;
 
     static texture = 'assets/media/images/sprites/man/sprite.png';
@@ -43,7 +43,14 @@ export default class Player {
         const playerImage = new Image();
         playerImage.src = this.texture;
 
-        ctx.drawImage(playerImage, this.spriteArea[this._status].x, this.spriteArea[this._status].y, this.width, this.height, this.x, this.y, this.width * this.scale, this.height * this.scale);
+        ctx.drawImage(
+            playerImage,
+            this.spriteArea[this._status].x,
+            this.spriteArea[this._status].y,
+            this.width, this.height,
+            this.x, this.y,
+            this.width * this.scale, this.height * this.scale
+        );
 
     }
 
