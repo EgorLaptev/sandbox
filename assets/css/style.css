@@ -1,4 +1,6 @@
 body {
+    position: absolute;
+    inset: 0;
     margin: 0;
     overflow: hidden;
 }
@@ -9,5 +11,12 @@ body * {
 
 #world {
     display: block;
-    cursor: none;
+
+}
+
+#toolbar {
+    position: fixed;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
 }

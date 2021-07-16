@@ -2,10 +2,10 @@
 
 export default class Player {
 
-    static x = 150;
+    static x = 250;
     static y;
 
-    static scale = 0.75;
+    static scale = 1;
 
     static _status   = 'stand';
     static alternate = false;
@@ -26,7 +26,11 @@ export default class Player {
 
     static health     = 100;
     static speed      = 5;
-    static jumpHeight = 100;
+    static jumpHeight = 125;
+    static velocity   = {
+        x: 0,
+        y: 0
+    }
 
     static jumping = false;
     static lying   = false;
@@ -43,8 +47,6 @@ export default class Player {
         this.height = this.spriteArea[status].height;
 
         this.alternate = alternate;
-
-        if (!this.jumping) this.y = cnv.height - this.height * this.scale - 50;
 
     }
 
@@ -75,7 +77,12 @@ export default class Player {
 
         this.y -= this.jumpHeight;
 
-        setTimeout( () => this.jumping = false, 1000);
+        const flightCheck = setInterval( () => {
+            if ( this.y + this.height >= cnv.height - 50 ) {
+                this.jumping = false;
+                clearInterval(flightCheck);
+            }
+        }, 1000 / 30);
 
     }
 

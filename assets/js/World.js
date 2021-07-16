@@ -36,6 +36,10 @@ export default class World {
         map: {
             width: 250,
             height: this.cnv.height
+        },
+        gravity: {
+            power: 1,
+            maxPower: 25
         }
     };
 
@@ -54,7 +58,7 @@ export default class World {
         this.player.setStatus('stand', this.cnv, false);
 
         /* Controller */
-        this.controller.init( this.player );
+        this.controller.init( this.player, this.camera );
 
         /* Camera */
         this.camera.init( this.player, {
@@ -75,6 +79,7 @@ export default class World {
     static loop() {
 
         if ( !World.paused ) {
+            World.physic();
             World.render();
         }
 
@@ -107,6 +112,25 @@ export default class World {
         this.player.render(ctx, this.camera);
     }
 
+    static physic() {
+
+        /* Gravity */
+        if ( this.player.y + this.player.height < this.cnv.height - this.config.floor.height) {
+            if ( this.player.velocity.y < this.config.gravity.maxPower ) {
+                this.player.velocity.y += this.config.gravity.power;
+            }
+        } else {
+            this.player.velocity.y = 0;
+        }
+
+        this.player.y += this.player.velocity.y;
+
+        if ( this.player.y + this.player.height >= this.cnv.height - this.config.floor.height ) {
+            this.player.y = this.cnv.height - this.config.floor.height - this.player.height;
+        }
+
+    }
+
     static pause() {
         this.paused = !this.paused;
     }
@@ -134,6 +158,13 @@ export default class World {
         /* Left */
         this.controller.bind(65, () => {
 
+            if ( this.player.x <= 0 ) return false;
+
+            if ( this.player.x - this.camera.x < this.camera.scrollEdge && this.player.x - this.camera.scrollEdge >= 0 ) {
+                this.camera.x -= this.player.speed;
+                this.config.bg.offset.x += this.player.speed;
+            }
+
             this.player.x -= this.player._status === 'lie' ? this.player.speed/2 : this.player.speed;
             if ( this.player.jumping ) this.player.setStatus( 'hands_up', this.cnv, true);
             this.player.setStatus( 'walk_2', this.cnv, true);
@@ -142,6 +173,13 @@ export default class World {
 
         /* Right */
         this.controller.bind(68, () => {
+
+            if ( this.player.x + this.player.width >= this.camera.limit.x ) return false;
+
+            if ( this.player.x - this.camera.x + this.player.width > this.camera.width - this.camera.scrollEdge && this.player.x + this.player.width + this.camera.scrollEdge <= this.camera.limit.x ) {
+                this.camera.x += this.player.speed;
+                this.config.bg.offset.x -= this.player.speed;
+            }
 
             this.player.x += this.player._status === 'lie' ? this.player.speed/2 : this.player.speed;
             if ( this.player.jumping ) this.player.setStatus('hands_up', this.cnv, false);
@@ -187,12 +225,17 @@ export default class World {
 
         /* Camera - down */
         this.controller.bind(40, () => {
-            if( this.camera.y < 0) {
+            if( this.camera.y < 25) {
                 this.camera.y += this.camera.speed;
                 this.config.bg.offset.y -= this.camera.speed;
             }
         });
 
+
+        // Cursor
+
+        /* Move player */
+        this.controller.dragndrop( this.player );
 
     }
 
