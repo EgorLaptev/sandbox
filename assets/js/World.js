@@ -3,12 +3,14 @@
 import Player from "./Player.js";
 import Controller from "./Controller.js";
 import Camera from "./Camera.js";
+import Cursor from "./Cursor.js";
 
 export default class World {
 
     static player     = Player;
     static controller = Controller;
     static camera     = Camera;
+    static cursor     = Cursor;
 
     static cnv = document.getElementById('world');
     static ctx = this.cnv.getContext('2d');
@@ -94,7 +96,7 @@ export default class World {
               ctx = this.ctx;
 
         if ( this.config.bg.src )
-            this.cnv.style.background = `
+            cnv.style.background = `
             ${ this.config.bg?.color } 
             url( ${ this.config.bg.src } ) 
             ${ this.config.bg.offset.x }px ${ this.config.bg.offset.y }px
@@ -103,13 +105,16 @@ export default class World {
         /* Clear world */
         ctx.clearRect(0, 0, cnv.width, cnv.height);
 
+        /* Player */
+        this.player.render(ctx, this.camera);
+
         /* Ground */
         ctx.fillStyle = this.config.floor.color;
         ctx.fillRect(0, cnv.height - this.config.floor.height - this.camera.y, cnv.width, cnv.height);
 
-        // Entities
-        /* Player */
-        this.player.render(ctx, this.camera);
+        /* Cursor */
+        this.cursor.render( ctx );
+
     }
 
     static physic() {
@@ -232,7 +237,11 @@ export default class World {
         });
 
 
-        // Cursor
+        /* Cursor */
+        this.cnv.addEventListener('mousemove', e => {
+            this.cursor.x = e.clientX - this.cursor.width/2;
+            this.cursor.y = e.clientY - this.cursor.height/2;
+        })
 
         /* Move player */
         this.controller.dragndrop( this.player );
