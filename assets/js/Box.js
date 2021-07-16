@@ -1,6 +1,8 @@
 'use strict';
 
-export default class Box {
+import Entity from "./Entity.js";
+
+export default class Box extends Entity {
 
     static list = [];
 
@@ -10,6 +12,8 @@ export default class Box {
     height = 150;
 
     constructor(x, y) {
+
+        super();
 
         this.x = x;
         this.y = y;

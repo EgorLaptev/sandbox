@@ -1,14 +1,15 @@
 'use strict';
 
-import Player       from "./Player.js";
 import Controller   from "./Controller.js";
 import Camera       from "./Camera.js";
 import Cursor       from "./Cursor.js";
+import Entity       from "./Entity.js";
+import Player       from "./Player.js";
 import Box          from "./Box.js";
 
 export default class World {
 
-    static player     = Player;
+    static player     = new Player;
     static controller = Controller;
     static camera     = Camera;
     static cursor     = Cursor;
@@ -125,19 +126,30 @@ export default class World {
 
     static physic() {
 
-        /* Gravity */
-        if ( this.player.y + this.player.height < this.cnv.height - this.config.floor.height && !this.player.dragged) {
-            if ( this.player.velocity.y < this.config.gravity.maxPower ) {
-                this.player.velocity.y += this.config.gravity.power;
+        const cnv    = this.cnv,
+              config = this.config;
+
+        for ( let i=0; i < Entity.list.length; i++ ) {
+
+            let entity = Entity.list[i];
+
+            // Gravity
+
+            /* Overclocking */
+            if ( entity.y + entity.height < cnv.height - config.floor.height && !entity.dragged) {
+                if ( entity.velocity.y < config.gravity.maxPower ) {
+                    entity.velocity.y += config.gravity.power;
+                }
+            } else entity.velocity.y = 0;
+
+            /* Falling */
+            entity.y += entity.velocity.y;
+
+            /* Stop falling */
+            if ( entity.y + entity.height >= cnv.height - config.floor.height ) {
+                entity.y = cnv.height - config.floor.height - entity.height;
             }
-        } else {
-            this.player.velocity.y = 0;
-        }
 
-        this.player.y += this.player.velocity.y;
-
-        if ( this.player.y + this.player.height >= this.cnv.height - this.config.floor.height ) {
-            this.player.y = this.cnv.height - this.config.floor.height - this.player.height;
         }
 
     }
@@ -249,8 +261,9 @@ export default class World {
             this.cursor.y = e.clientY - this.cursor.height/2;
         })
 
-        /* Move player */
-        this.controller.dragndrop( this.player );
+        /* Move entities */
+        for ( let i=0; i < Entity.list.length; i++)
+            this.controller.dragndrop( Entity.list[i] );
 
     }
 

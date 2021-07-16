@@ -1,19 +1,19 @@
 'use strict';
 
-export default class Player {
+import Entity from "./Entity.js";
 
-    static x = 250;
-    static y;
+export default class Player extends Entity {
 
-    static scale = 1;
+    x = 250;
+    y;
 
-    static _status   = 'stand';
-    static alternate = false;
+    scale = 1;
 
-    static dragged = false;
+    _status   = 'stand';
+    alternate = false;
 
     /* Sprite's map */
-    static spriteArea = {
+    spriteArea = {
         'shoot':    { x: 0, y: 0, width: 220, height: 355 },
         'hands_up': { x: 221, y: 0, width: 123, height: 355 },
         'stand':    { x: 346, y: 0, width: 117, height: 355 },
@@ -23,23 +23,21 @@ export default class Player {
         'lie':     { x: 0, y: 447, width: 420, height: 90 },
     }
 
-    static width    = 115;
-    static height   = 355;
+    width    = 115;
+    height   = 355;
 
-    static health     = 100;
-    static speed      = 5;
-    static jumpHeight = 125;
-    static velocity   = {
-        x: 0,
-        y: 0
-    }
+    health     = 100;
+    speed      = 5;
+    jumpHeight = 125;
 
-    static jumping = false;
-    static lying   = false;
+    jumping = false;
+    lying   = false;
 
-    static texture = 'assets/media/images/sprites/man2.png';
+    texture = 'assets/media/images/sprites/man2.png';
 
-    static setStatus(status, cnv, alternate = this.alternate) {
+    constructor() { super() }
+
+    setStatus(status, cnv, alternate = this.alternate) {
 
         if ( this.jumping && status !== 'hands_up' ) return false;
 
@@ -52,7 +50,7 @@ export default class Player {
 
     }
 
-    static render(ctx, camera) {
+     render(ctx, camera) {
 
         const playerImage = new Image();
         playerImage.src = this.texture;
@@ -70,7 +68,7 @@ export default class Player {
 
     }
 
-    static jump( cnv ) {
+    jump( cnv ) {
 
         if (this.jumping) return false;
         this.jumping = true;
@@ -88,7 +86,7 @@ export default class Player {
 
     }
 
-    static lie( cnv ) {
+    lie( cnv ) {
         if (this.jumping) return false;
         this.lying = true;
         this.setStatus('lie', cnv);
