@@ -48,7 +48,7 @@ export default class Player {
 
     }
 
-    static render(ctx) {
+    static render(ctx, camera) {
 
         const playerImage = new Image();
         playerImage.src = this.texture;
@@ -60,7 +60,7 @@ export default class Player {
             offsetX,
             this.spriteArea[this._status].y,
             this.width, this.height,
-            this.x, this.y,
+            this.x - camera.x, this.y - camera.y,
             this.width * this.scale, this.height * this.scale
         );
 

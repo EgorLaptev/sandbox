@@ -9,4 +9,5 @@ body * {
 
 #world {
     display: block;
+    cursor: none;
 }
