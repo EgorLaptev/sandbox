@@ -1,9 +1,10 @@
 'use strict';
 
-import Player from "./Player.js";
-import Controller from "./Controller.js";
-import Camera from "./Camera.js";
-import Cursor from "./Cursor.js";
+import Player       from "./Player.js";
+import Controller   from "./Controller.js";
+import Camera       from "./Camera.js";
+import Cursor       from "./Cursor.js";
+import Box          from "./Box.js";
 
 export default class World {
 
@@ -62,6 +63,8 @@ export default class World {
         /* Controller */
         this.controller.init( this.player, this.camera );
 
+        new Box(100, 500);
+
         /* Camera */
         this.camera.init( this.player, {
             width: this.cnv.width,
@@ -99,14 +102,17 @@ export default class World {
             cnv.style.background = `
             ${ this.config.bg?.color } 
             url( ${ this.config.bg.src } ) 
-            ${ this.config.bg.offset.x }px ${ this.config.bg.offset.y }px
-            `;
+            ${ this.config.bg.offset.x }px ${ this.config.bg.offset.y }px `;
 
         /* Clear world */
         ctx.clearRect(0, 0, cnv.width, cnv.height);
 
         /* Player */
         this.player.render(ctx, this.camera);
+
+        /* Boxes */
+        for ( let i=0; i < Box.list.length; i++)
+            Box.list[i].render( ctx );
 
         /* Ground */
         ctx.fillStyle = this.config.floor.color;

@@ -28,7 +28,7 @@ export default class Player {
 
     static health     = 100;
     static speed      = 5;
-    static jumpHeight = 500;
+    static jumpHeight = 125;
     static velocity   = {
         x: 0,
         y: 0
@@ -92,7 +92,7 @@ export default class Player {
         if (this.jumping) return false;
         this.lying = true;
         this.setStatus('lie', cnv);
-
+        this.y = cnv.height - this.height;
         setTimeout( ()=> this.lying = false, 100 );
 
     }
