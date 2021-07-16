@@ -10,6 +10,8 @@ export default class Player {
     static _status   = 'stand';
     static alternate = false;
 
+    static dragged = false;
+
     /* Sprite's map */
     static spriteArea = {
         'shoot':    { x: 0, y: 0, width: 220, height: 355 },
@@ -26,7 +28,7 @@ export default class Player {
 
     static health     = 100;
     static speed      = 5;
-    static jumpHeight = 125;
+    static jumpHeight = 500;
     static velocity   = {
         x: 0,
         y: 0
@@ -91,8 +93,7 @@ export default class Player {
         this.lying = true;
         this.setStatus('lie', cnv);
 
-        clearTimeout(this.lieDelay);
-        this.lieDelay = setTimeout( ()=> this.lying = false, 100 );
+        setTimeout( ()=> this.lying = false, 100 );
 
     }
 

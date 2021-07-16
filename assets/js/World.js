@@ -38,7 +38,7 @@ export default class World {
             height: this.cnv.height
         },
         gravity: {
-            power: 1,
+            power: .6,
             maxPower: 25
         }
     };
@@ -115,7 +115,7 @@ export default class World {
     static physic() {
 
         /* Gravity */
-        if ( this.player.y + this.player.height < this.cnv.height - this.config.floor.height) {
+        if ( this.player.y + this.player.height < this.cnv.height - this.config.floor.height && !this.player.dragged) {
             if ( this.player.velocity.y < this.config.gravity.maxPower ) {
                 this.player.velocity.y += this.config.gravity.power;
             }

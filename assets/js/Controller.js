@@ -19,7 +19,10 @@ export default class Controller {
         document.addEventListener('keyup',  e => this._pressedKeys[e.keyCode] = false );
 
         document.addEventListener('mousedown', e => this._mouseDown = true );
-        document.addEventListener('mouseup', e => this._mouseDown = false );
+        document.addEventListener('mouseup', e => {
+            this._mouseDown = false;
+            for ( let i=0; i < this._dragndropTargets.length; i++)  this._dragndropTargets[i].dragged = false;
+        } );
         document.addEventListener('mousemove', e => {
 
             if ( !this._mouseDown ) return false;
@@ -32,6 +35,7 @@ export default class Controller {
                     this._dragndropTargets[i].y - this.camera.y <= e.clientY &&
                     this._dragndropTargets[i].y - this.camera.y + this._dragndropTargets[i].height >= e.clientY
                 ) {
+                    this._dragndropTargets[i].dragged = true;
                     this._dragndropTargets[i].x =e.clientX + this.camera.x - this._dragndropTargets[i].width/2;
                     this._dragndropTargets[i].y =e.clientY + this.camera.y - this._dragndropTargets[i].height/2;
                 }
