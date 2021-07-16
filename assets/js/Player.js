@@ -7,8 +7,6 @@ export default class Player extends Entity {
     x = 250;
     y;
 
-    scale = 1;
-
     _status   = 'stand';
     alternate = false;
 
@@ -63,7 +61,7 @@ export default class Player extends Entity {
             this.spriteArea[this._status].y,
             this.width, this.height,
             this.x - camera.x, this.y - camera.y,
-            this.width * this.scale, this.height * this.scale
+            this.width, this.height
         );
 
     }
@@ -92,7 +90,6 @@ export default class Player extends Entity {
         this.setStatus('lie', cnv);
         this.y = cnv.height - this.height;
         setTimeout( ()=> this.lying = false, 100 );
-
     }
 
 }

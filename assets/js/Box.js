@@ -22,12 +22,12 @@ export default class Box extends Entity {
 
     }
 
-    render(ctx) {
+    render(ctx, camera) {
 
         const boxTexture = new Image();
         boxTexture.src = this.texture;
 
-        ctx.drawImage(boxTexture, this.x, this.y, this.width, this.height);
+        ctx.drawImage(boxTexture, this.x - camera.x, this.y - camera.y, this.width, this.height);
 
     }
 

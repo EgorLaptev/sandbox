@@ -1,5 +1,6 @@
 'use strict';
 
+import ContextMenu  from "./ContextMenu.js";
 import Controller   from "./Controller.js";
 import Camera       from "./Camera.js";
 import Cursor       from "./Cursor.js";
@@ -58,13 +59,17 @@ export default class World {
         if ( this.config.bg.src ) this.cnv.style.background = `${ this.config.bg?.color } url( ${ this.config.bg.src } ) ${ this.config.bg.offset.x }px ${ this.config.bg.offset.y }px`;
 
         /* Player */
-        this.player.y = this.cnv.height - 50 - this.player.height * this.player.scale;
+        this.player.y = this.cnv.height - 50 - this.player.height;
         this.player.setStatus('stand', this.cnv, false);
 
         /* Controller */
         this.controller.init( this.player, this.camera );
 
-        new Box(100, 500);
+        /* Cursor */
+        this.cursor.init();
+
+        /* Context menu */
+        ContextMenu.init();
 
         /* Camera */
         this.camera.init( this.player, {
@@ -113,7 +118,7 @@ export default class World {
 
         /* Boxes */
         for ( let i=0; i < Box.list.length; i++)
-            Box.list[i].render( ctx );
+            Box.list[i].render( ctx, this.camera );
 
         /* Ground */
         ctx.fillStyle = this.config.floor.color;
@@ -257,9 +262,17 @@ export default class World {
 
         /* Cursor */
         this.cnv.addEventListener('mousemove', e => {
+
             this.cursor.x = e.clientX - this.cursor.width/2;
             this.cursor.y = e.clientY - this.cursor.height/2;
+
         })
+
+        this.cnv.addEventListener('contextmenu', e => {
+            e.preventDefault();
+            ContextMenu.open(e.clientX, e.clientY);
+            setTimeout(() => ContextMenu.close(), 2500);
+        });
 
         /* Move entities */
         for ( let i=0; i < Entity.list.length; i++)
