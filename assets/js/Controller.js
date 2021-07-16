@@ -41,4 +41,11 @@ export default class Controller {
 
     }
 
+    static drop() {
+        this._defaults  = [];
+        this._binds     = [];
+        this.controlled = null;
+        this._pressedKeys = [];
+    }
+
 }
