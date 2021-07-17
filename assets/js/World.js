@@ -63,9 +63,6 @@ export default class World {
         /* Controller */
         this.controller.init( this.player, this.camera );
 
-        /* Context menu */
-        ContextMenu.init();
-
         /* Camera */
         this.camera.init( this.player, {
             width: this.cnv.width,
@@ -115,7 +112,7 @@ export default class World {
         ctx.fillRect(0, cnv.height - this.config.floor.height - this.camera.y, cnv.width, cnv.height);
 
         /* Cursor */
-        this.cursor.render( ctx );
+        // this.cursor.render( ctx );
 
     }
 
@@ -201,6 +198,10 @@ export default class World {
             if ( e.keyCode === 69 && this.cursor.insert)
                 new this.cursor.insert(this.cursor.x - this.cursor.insert.width/2 + Camera.x, this.cursor.y - this.cursor.insert.height/2 + Camera.y);
 
+            /* Q - open context menu */
+            if ( e.keyCode === 81 ) {
+                ContextMenu.opened ? ContextMenu.close() : ContextMenu.open();
+            }
 
         })
 

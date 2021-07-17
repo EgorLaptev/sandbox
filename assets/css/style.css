@@ -7,11 +7,11 @@ body {
 
 body * {
     box-sizing: border-box;
+    cursor:url(../media/images/cursor/cursor.png), auto;
 }
 
 #world {
     display: block;
-    cursor: none;
 }
 
 #toolbar {
@@ -19,4 +19,27 @@ body * {
     left: 0;
     top: 50%;
     transform: translateY(-50%);
+}
+
+#entitiesMenu {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    padding: 15px;
+    grid-gap: 25px 10px;
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: min-content;
+    width: 350px;
+    background-color: rgba(0, 0, 0, .75);
+    border-radius: 3px;
+}
+
+#entitiesMenu img {
+    width: 100%;
+    height: 100px;
+    object-fit: contain;
+    cursor:url(../media/images/cursor/cursor-active.png), auto;
+
 }

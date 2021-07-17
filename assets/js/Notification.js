@@ -36,7 +36,7 @@ export default class Notification {
                 font-size: ${Notification.config.font.size};
                 font-family: ${Notification.config.font.family};
                 color: ${Notification.config.font.color};
-                cursor: pointer;
+                cursor:url(../media/images/cursor/cursor-active.png), auto;
             `;
 
         /* Adding notification */
