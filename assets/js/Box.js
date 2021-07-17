@@ -8,10 +8,7 @@ export default class Box extends Entity {
 
     constructor(x, y) {
 
-        super();
-
-        this.x = x;
-        this.y = y;
+        super(x, y);
 
         Box.list.push(this);
 

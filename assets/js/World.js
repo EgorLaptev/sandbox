@@ -10,7 +10,7 @@ import Notification from "./Notification.js";
 
 export default class World {
 
-    static player     = new Player;
+    static player     = null;
     static controller = Controller;
     static camera     = Camera;
     static cursor     = Cursor;
@@ -57,8 +57,9 @@ export default class World {
         if ( this.config.bg.src ) this.cnv.style.background = `${ this.config.bg?.color } url( ${ this.config.bg.src } ) ${ this.config.bg.offset.x }px ${ this.config.bg.offset.y }px`;
 
         /* Player */
-        this.player.y = this.cnv.height - 50 - this.player.height;
+        this.player = new Player(50, this.cnv.height - 50 - Player.height);
         this.player.setStatus('stand', this.cnv, false);
+
 
         /* Controller */
         this.controller.init( this.player, this.camera );
@@ -310,16 +311,20 @@ export default class World {
     static notifications() {
 
         setTimeout( () => {
-            new Notification('To control the camera, use the arrow keys');
+            new Notification('Arrow keys - for control camera ');
         }, 2500);
 
         setTimeout( () => {
-           new Notification('To control - keys W, A, S, D');
+           new Notification('W, A, S, D - To move');
         }, 5000);
 
         setTimeout( () => {
-           new Notification('Entities menu open on RMB');
+           new Notification('Q - to open side menu');
         }, 7500);
+
+        setTimeout( () => {
+           new Notification('E - to spawn entity');
+        }, 10000);
 
     }
 

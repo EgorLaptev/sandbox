@@ -13,7 +13,11 @@ export default class Entity {
         y: 0
     }
 
-    constructor() {
+    constructor(x, y) {
+
+        this.x = x;
+        this.y = y;
+
         Controller.dragndrop(this);
         Entity.list.push(this);
     }

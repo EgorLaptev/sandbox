@@ -4,9 +4,6 @@ import Entity from "./Entity.js";
 
 export default class Player extends Entity {
 
-    x = 250;
-    y;
-
     _status   = 'stand';
     alternate = false;
 
@@ -21,6 +18,9 @@ export default class Player extends Entity {
         'lie':     { x: 0, y: 447, width: 420, height: 90 },
     }
 
+    static width  = 115;
+    static height = 355;
+
     width    = 115;
     height   = 355;
 
@@ -33,7 +33,7 @@ export default class Player extends Entity {
 
     texture = 'assets/media/images/sprites/man2.png';
 
-    constructor() { super() }
+    constructor(x, y) { super(x, y) }
 
     setStatus(status, cnv, alternate = this.alternate) {
 
