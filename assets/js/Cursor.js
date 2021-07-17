@@ -14,17 +14,6 @@ export default class Cursor {
 
     static texture = 'assets/media/images/cursor/cursor.png';
 
-    static init() {
-
-        document.addEventListener('click', e => {
-            if ( this.insert ) {
-                new this.insert(e.clientX - this.insert.width/2 + Camera.x, e.clientY - this.insert.height/2 + Camera.y);
-                this.insert = null; // Limit: 1 click
-            }
-        });
-
-    }
-
     static render( ctx ) {
 
         const cursorTexture = new Image();

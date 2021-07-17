@@ -12,7 +12,7 @@ export default class Notification {
         },
         color: '#222',
         class: 'game-notification',
-        time: 5 // In seconds
+        time: 10 // In seconds
     }
 
     constructor(content) {
@@ -36,14 +36,17 @@ export default class Notification {
                 font-size: ${Notification.config.font.size};
                 font-family: ${Notification.config.font.family};
                 color: ${Notification.config.font.color};
+                cursor: pointer;
             `;
 
         /* Adding notification */
         document.body.appendChild(notification);
         Notification.list.push(notification);
 
+        notification.addEventListener('click', e => this.close( Notification.list.indexOf(e.target) ) );
+
         /* Fade in effect */
-        setTimeout( () => notification.style.opacity = '1', 0);
+        setTimeout( () => notification.style.opacity = '1', 50);
 
         /* Close notification */
         setTimeout( () => {
@@ -57,11 +60,12 @@ export default class Notification {
 
     }
 
-    close() {
+    close( index = 0) {
 
+        if ( !Notification.list.length ) return false;
 
         /* Delete notification */
-        Notification.list.shift().remove();
+        Notification.list.splice(index, 1)[0].remove();
 
         /* Moving other notifications up */
         for ( let i=0;i<Notification.list.length;i++)

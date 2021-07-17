@@ -19,24 +19,22 @@ export default class World {
     static ctx = this.cnv.getContext('2d');
 
     static config = {
-        floor: {
-          height: 50,
-          color: '#090909'
-        },
         audio: {
-            /* Background audio */
             src: '',
             volume: 1,
             repeat: true
         },
         bg: {
             color: '#222',
-            gradients: 'repeating-linear-gradient(90deg, transparent, transparent 5px, #111 5px, #111 100px), repeating-linear-gradient(0deg, transparent, transparent 5px, #111 5px, #111 100px)',
             src: 'assets/media/images/bg.PNG',
             offset: {
                 x: 0,
                 y: 0
             }
+        },
+        floor: {
+          height: 50,
+          color: '#090909'
         },
         map: {
             width: 250,
@@ -65,9 +63,6 @@ export default class World {
         /* Controller */
         this.controller.init( this.player, this.camera );
 
-        /* Cursor */
-        this.cursor.init();
-
         /* Context menu */
         ContextMenu.init();
 
@@ -82,18 +77,7 @@ export default class World {
             },
         });
 
-        setTimeout( () => {
-            new Notification('To control the camera, use the arrow keys');
-        }, 1500);
-
-        setTimeout( () => {
-           new Notification('To control - keys W, A, S, D');
-        }, 4000);
-
-        setTimeout( () => {
-           new Notification('Entities menu open on RMB');
-        }, 7000);
-
+        this.notifications();
         this.listeners();
         this.loop();
 
@@ -211,7 +195,12 @@ export default class World {
         document.addEventListener('keydown', e => {
 
             /* Esc - pause */
-            if ( e.keyCode == 27 ) this.pause();
+            if ( e.keyCode === 27 ) this.pause();
+
+            /* E - spawn entity */
+            if ( e.keyCode === 69 && this.cursor.insert)
+                new this.cursor.insert(this.cursor.x - this.cursor.insert.width/2 + Camera.x, this.cursor.y - this.cursor.insert.height/2 + Camera.y);
+
 
         })
 
@@ -314,6 +303,22 @@ export default class World {
             ContextMenu.open(e.clientX, e.clientY);
             setTimeout(() => ContextMenu.close(), 2500); // Auto-close after 2.5s
         });
+
+    }
+
+    static notifications() {
+
+        setTimeout( () => {
+            new Notification('To control the camera, use the arrow keys');
+        }, 2500);
+
+        setTimeout( () => {
+           new Notification('To control - keys W, A, S, D');
+        }, 5000);
+
+        setTimeout( () => {
+           new Notification('Entities menu open on RMB');
+        }, 7500);
 
     }
 
