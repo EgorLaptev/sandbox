@@ -1,5 +1,7 @@
 'use strict';
 
+import Controller from "./Controller.js";
+
 export default class Entity {
 
     static list = [];
@@ -12,6 +14,7 @@ export default class Entity {
     }
 
     constructor() {
+        Controller.dragndrop(this);
         Entity.list.push(this);
     }
 

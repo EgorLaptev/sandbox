@@ -156,12 +156,33 @@ export default class World {
 
     static collisions(entity) {
 
+        for ( let i=0; i < Entity.list.length; i++ ) {
 
+            const entity2 = Entity.list[i];
+
+            if (
+                entity.y <= (entity2.y + entity2.height) &&
+                entity.x <= (entity2.x + entity2.width) &&
+                (entity.x + entity.width) >= entity2.x &&
+                (entity.y + entity.height) >= entity2.y &&
+                entity !== entity2
+            ) {
+
+            }
+
+        }
 
     }
 
     static pause() {
+
         this.paused = !this.paused;
+        this.controller.disabled = this.paused;
+
+        /* Pause screen */
+        this.ctx.fillStyle = 'rgba(0,0,0,.5)';
+        this.ctx.fillRect(0, 0, this.cnv.width, this.cnv.height);
+
     }
 
     static listeners() {
@@ -174,6 +195,12 @@ export default class World {
             this.cnv.height = window.innerHeight;
         });
 
+        document.addEventListener('keydown', e => {
+
+            /* Esc - pause */
+            if ( e.keyCode == 27 ) this.pause();
+
+        })
 
         // Player control
 
@@ -274,10 +301,6 @@ export default class World {
             ContextMenu.open(e.clientX, e.clientY);
             setTimeout(() => ContextMenu.close(), 2500); // Auto-close after 2.5s
         });
-
-        /* Move entities */
-        for ( let i=0; i < Entity.list.length; i++)
-            this.controller.dragndrop( Entity.list[i] );
 
     }
 

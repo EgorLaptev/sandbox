@@ -9,6 +9,7 @@ export default class Controller {
     static _defaults    = [];
     static _mouseDown   = false;
     static _dragndropTargets = [];
+    static disabled     = false;
 
     static init(controlled, camera) {
 
@@ -24,6 +25,8 @@ export default class Controller {
             for ( let i=0; i < this._dragndropTargets.length; i++)  this._dragndropTargets[i].dragged = false;
         } );
         document.addEventListener('mousemove', e => {
+
+            if ( this.disabled ) return false;
 
             if ( !this._mouseDown ) return false;
 
@@ -60,26 +63,24 @@ export default class Controller {
 
     static _watcher() {
 
-        // Default actions
-        for ( const def of Controller._defaults ) def();
+        if ( !Controller.disabled ) {
 
-        // Actions on bind
-        for ( const bind of Controller._binds )
-            if ( Controller._pressedKeys[bind.keyCode] ) bind.callback();
+            // Default actions
+            for ( const def of Controller._defaults ) def();
+
+            // Actions on bind
+            for ( const bind of Controller._binds )
+                if ( Controller._pressedKeys[bind.keyCode] ) bind.callback();
+
+        }
 
         requestAnimationFrame(Controller._watcher);
 
     }
 
     static dragndrop( target ) {
+        if ( this.disabled ) return false;
         this._dragndropTargets.push(target);
-    }
-
-    static drop() {
-        this._defaults  = [];
-        this._binds     = [];
-        this.controlled = null;
-        this._pressedKeys = [];
     }
 
 }

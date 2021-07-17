@@ -1,5 +1,7 @@
 'use strict';
 
+import Camera from "./Camera.js";
+
 export default class Cursor {
 
     static insert = null;
@@ -15,7 +17,10 @@ export default class Cursor {
     static init() {
 
         document.addEventListener('click', e => {
-            if ( this.insert ) new this.insert(e.clientX - this.insert.width/2, e.clientY - this.insert.height/2);
+            if ( this.insert ) {
+                new this.insert(e.clientX - this.insert.width/2 + Camera.x, e.clientY - this.insert.height/2 + Camera.y);
+                this.insert = null; // Limit: 1 click
+            }
         });
 
     }
