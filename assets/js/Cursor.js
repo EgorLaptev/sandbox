@@ -15,7 +15,7 @@ export default class Cursor {
     static init() {
 
         document.addEventListener('click', e => {
-            if ( this.insert ) new this.insert(e.clientX, e.clientY);
+            if ( this.insert ) new this.insert(e.clientX - this.insert.width/2, e.clientY - this.insert.height/2);
         });
 
     }

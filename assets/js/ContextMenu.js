@@ -1,7 +1,10 @@
 'use strict';
 
-import Box from "./Box.js";
 import Cursor from "./Cursor.js";
+import LargeBox from "./LargeBox.js";
+import MediumBox from "./MediumBox.js";
+import SmallBox from "./SmallBox.js";
+import AppleBox from "./AppleBox.js";
 
 export default class ContextMenu {
 
@@ -26,7 +29,16 @@ export default class ContextMenu {
         this.element.innerHTML = 
             `
                 <li class="menu__item">
-                    <img src="assets/media/images/boxes/medium-box.png" alt="medium box" class="menu__preview">
+                    <img src="assets/media/images/boxes/large-box.png" alt="medium box" class="menu__preview" data-insert="Box">
+                </li>
+                <li class="menu__item">
+                    <img src="assets/media/images/boxes/medium-box.png" alt="medium box" class="menu__preview" data-insert="Box">
+                </li>
+                <li class="menu__item">
+                    <img src="assets/media/images/boxes/small-box.png" alt="medium box" class="menu__preview" data-insert="Box">
+                </li>
+                <li class="menu__item">
+                    <img src="assets/media/images/boxes/apple-box.png" alt="medium box" class="menu__preview" data-insert="Box">
                 </li>
             `;
 
@@ -36,6 +48,7 @@ export default class ContextMenu {
 
             menuPreviews[i].style =
                 `
+                    margin: 5px 0;
                     height: 50px;
                     width: 75px;
                     object-fit: contain;
@@ -43,7 +56,17 @@ export default class ContextMenu {
                 `;
 
             menuPreviews[i].addEventListener('click', e => {
-                setTimeout( () => Cursor.insert = Box, 250);
+
+                let insert;
+
+                switch (i) {
+                    case 0: insert = LargeBox; break;
+                    case 1: insert = MediumBox; break;
+                    case 2: insert = SmallBox; break;
+                    case 3: insert = AppleBox; break;
+                }
+
+                setTimeout( () => Cursor.insert = insert, 250);
                 this.close();
             });
 

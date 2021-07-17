@@ -6,7 +6,6 @@ import Camera       from "./Camera.js";
 import Cursor       from "./Cursor.js";
 import Entity       from "./Entity.js";
 import Player       from "./Player.js";
-import Box          from "./Box.js";
 
 export default class World {
 
@@ -104,21 +103,15 @@ export default class World {
         const cnv = this.cnv,
               ctx = this.ctx;
 
-        if ( this.config.bg.src )
-            cnv.style.background = `
-            ${ this.config.bg?.color } 
-            url( ${ this.config.bg.src } ) 
-            ${ this.config.bg.offset.x }px ${ this.config.bg.offset.y }px `;
+        /* Background */
+        if ( this.config.bg.src )  cnv.style.backgroundPosition = `${ this.config.bg.offset.x }px ${ this.config.bg.offset.y }px`;
 
         /* Clear world */
         ctx.clearRect(0, 0, cnv.width, cnv.height);
 
-        /* Player */
-        this.player.render(ctx, this.camera);
-
-        /* Boxes */
-        for ( let i=0; i < Box.list.length; i++)
-            Box.list[i].render( ctx, this.camera );
+        /* Entities */
+        for ( let i=0; i < Entity.list.length; i++)
+            Entity.list[i].render( ctx, this.camera);
 
         /* Ground */
         ctx.fillStyle = this.config.floor.color;
@@ -131,31 +124,39 @@ export default class World {
 
     static physic() {
 
-        const cnv    = this.cnv,
-              config = this.config;
-
         for ( let i=0; i < Entity.list.length; i++ ) {
 
             let entity = Entity.list[i];
 
-            // Gravity
-
-            /* Overclocking */
-            if ( entity.y + entity.height < cnv.height - config.floor.height && !entity.dragged) {
-                if ( entity.velocity.y < config.gravity.maxPower ) {
-                    entity.velocity.y += config.gravity.power;
-                }
-            } else entity.velocity.y = 0;
-
-            /* Falling */
-            entity.y += entity.velocity.y;
-
-            /* Stop falling */
-            if ( entity.y + entity.height >= cnv.height - config.floor.height ) {
-                entity.y = cnv.height - config.floor.height - entity.height;
-            }
+            this.gravity(entity);
+            this.collisions(entity);
 
         }
+
+    }
+
+    static gravity(entity) {
+
+        /* Overclocking */
+        if ( entity.y + entity.height < this.cnv.height - this.config.floor.height && !entity.dragged) {
+            if ( entity.velocity.y < this.config.gravity.maxPower ) {
+                entity.velocity.y += this.config.gravity.power;
+            }
+        } else entity.velocity.y = 0;
+
+        /* Falling */
+        entity.y += entity.velocity.y;
+
+        /* Stop falling */
+        if ( entity.y + entity.height >= this.cnv.height - this.config.floor.height ) {
+            entity.y = this.cnv.height - this.config.floor.height - entity.height;
+        }
+
+    }
+
+    static collisions(entity) {
+
+
 
     }
 
@@ -271,7 +272,7 @@ export default class World {
         this.cnv.addEventListener('contextmenu', e => {
             e.preventDefault();
             ContextMenu.open(e.clientX, e.clientY);
-            setTimeout(() => ContextMenu.close(), 2500);
+            setTimeout(() => ContextMenu.close(), 2500); // Auto-close after 2.5s
         });
 
         /* Move entities */
