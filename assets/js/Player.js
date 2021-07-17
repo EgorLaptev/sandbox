@@ -33,7 +33,10 @@ export default class Player extends Entity {
 
     texture = 'assets/media/images/sprites/man2.png';
 
-    constructor(x, y) { super(x, y) }
+    constructor(x, y) {
+        super(x, y)
+        this.setStatus('stand', this.cnv, false);
+    }
 
     setStatus(status, cnv, alternate = this.alternate) {
 

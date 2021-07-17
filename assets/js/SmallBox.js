@@ -1,12 +1,12 @@
 'use strict';
 
-import Box from "./Box.js";
+import Entity from "./Entity.js";
 
-export default class SmallBox extends Box {
+export default class SmallBox extends Entity {
 
     static list = [];
 
-    static texture = 'assets/media/images/boxes/small-box.png';
+    static texture = 'assets/media/images/entities/small-box.png';
 
     static width  = 100;
     static height = 75;
@@ -18,7 +18,7 @@ export default class SmallBox extends Box {
         this.width  = SmallBox.width;
         this.height = SmallBox.height;
 
-        this.texture = 'assets/media/images/boxes/small-box.png';
+        this.texture = 'assets/media/images/entities/small-box.png';
 
         SmallBox.list.push(this);
     }

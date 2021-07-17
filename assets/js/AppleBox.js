@@ -1,12 +1,12 @@
 'use strict';
 
-import Box from "./Box.js";
+import Entity from "./Entity.js";
 
-export default class AppleBox extends Box {
+export default class AppleBox extends Entity {
 
     static list = [];
 
-    static texture = 'assets/media/images/boxes/apple-box.png';
+    static texture = 'assets/media/images/entities/apple-box.png';
 
     static width  = 100;
     static height = 75;
@@ -18,7 +18,7 @@ export default class AppleBox extends Box {
         this.width  = AppleBox.width;
         this.height = AppleBox.height;
 
-        this.texture = 'assets/media/images/boxes/apple-box.png';
+        this.texture = 'assets/media/images/entities/apple-box.png';
 
         AppleBox.list.push(this);
 

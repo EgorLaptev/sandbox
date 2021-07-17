@@ -22,4 +22,15 @@ export default class Entity {
         Entity.list.push(this);
     }
 
+    render(ctx, camera) {
+
+        const texture = new Image();
+        texture.src = this.texture;
+
+        ctx.drawImage(texture, this.x - camera.x, this.y - camera.y, this.width, this.height);
+
+        return true;
+
+    }
+
 }

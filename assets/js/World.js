@@ -1,6 +1,6 @@
 'use strict';
 
-import ContextMenu  from "./ContextMenu.js";
+import Sidebar  from "./Sidebar.js";
 import Controller   from "./Controller.js";
 import Camera       from "./Camera.js";
 import Cursor       from "./Cursor.js";
@@ -53,19 +53,16 @@ export default class World {
         /* Canvas options */
         this.cnv.width  = window.innerWidth;
         this.cnv.height = window.innerHeight;
-        this.cnv.style.background = `${ this.config.bg.gradients } ${ this.config.bg.color }`;
         if ( this.config.bg.src ) this.cnv.style.background = `${ this.config.bg?.color } url( ${ this.config.bg.src } ) ${ this.config.bg.offset.x }px ${ this.config.bg.offset.y }px`;
 
         /* Player */
         this.player = new Player(50, this.cnv.height - 50 - Player.height);
-        this.player.setStatus('stand', this.cnv, false);
-
 
         /* Controller */
         this.controller.init( this.player, this.camera );
 
         /* Context menu */
-        ContextMenu.init();
+        Sidebar.init();
 
         /* Camera */
         this.camera.init( this.player, {
@@ -204,7 +201,7 @@ export default class World {
 
             /* Q - open context menu */
             if ( e.keyCode === 81 ) {
-                ContextMenu.opened ? ContextMenu.close() : ContextMenu.open();
+                Sidebar.opened ? Sidebar.close() : Sidebar.open();
             }
 
         })

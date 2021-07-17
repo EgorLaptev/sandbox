@@ -5,8 +5,19 @@ import LargeBox from "./LargeBox.js";
 import MediumBox from "./MediumBox.js";
 import SmallBox from "./SmallBox.js";
 import AppleBox from "./AppleBox.js";
+import Barrel from "./Barrel.js";
+import Orange from "./Orange.js";
+import Apple from "./Apple.js";
+import BlueChest from "./BlueChest.js";
+import RedChest from "./RedChest.js";
+import PurpleChest from "./PurpleChest.js";
+import SuperChest from "./SuperChest.js";
+import CartoonBox from "./CartoonBox.js";
+import KittenCartoonBox from "./KittenCartoonBox.js";
+import OpenCartoonBox from "./OpenCartoonBox.js";
+import OpenLargeCartoonBox from "./OpenLargeCartoonBox.js";
 
-export default class ContextMenu {
+export default class Sidebar {
 
     static opened = false;
 
@@ -17,6 +28,17 @@ export default class ContextMenu {
         MediumBox,
         SmallBox,
         AppleBox,
+        Barrel,
+        Orange,
+        Apple,
+        BlueChest,
+        RedChest,
+        PurpleChest,
+        SuperChest,
+        CartoonBox,
+        KittenCartoonBox,
+        OpenCartoonBox,
+        OpenLargeCartoonBox
     ];
 
     static init() {
