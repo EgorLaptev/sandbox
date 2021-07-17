@@ -40,6 +40,7 @@ body * {
     width: 100%;
     height: 100px;
     object-fit: contain;
+    user-select: none;
+    -webkit-user-drag: none;
     cursor:url(../media/images/cursor/cursor-active.png), auto;
-
 }

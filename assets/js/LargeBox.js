@@ -6,7 +6,7 @@ export default class LargeBox extends Box {
 
     static list = [];
 
-    texture = 'assets/media/images/boxes/large-box.png';
+    static texture = 'assets/media/images/boxes/large-box.png';
 
     static width  = 350;
     static height = 250;
@@ -17,6 +17,8 @@ export default class LargeBox extends Box {
 
         this.width  = LargeBox.width;
         this.height = LargeBox.height;
+
+        this.texture = 'assets/media/images/boxes/large-box.png';
 
         LargeBox.list.push(this);
 

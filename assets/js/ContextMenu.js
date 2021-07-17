@@ -12,6 +12,32 @@ export default class ContextMenu {
 
     static element = document.getElementById('entitiesMenu');
 
+    static entities = [
+        LargeBox,
+        MediumBox,
+        SmallBox,
+        AppleBox,
+    ];
+
+    static init() {
+
+        for (let i=0; i<this.entities.length; i++) {
+
+            const previewEntity = document.createElement('img');
+            previewEntity.src = this.entities[i].texture;
+            previewEntity.classList.add('preview');
+
+            previewEntity.addEventListener('click', e => {
+                Cursor.insert = this.entities[i];
+                this.close();
+            })
+
+            this.element.appendChild(previewEntity);
+
+        }
+
+    }
+
     static open() {
         this.opened = true;
         this.element.style.display = 'grid';

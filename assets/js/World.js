@@ -63,6 +63,9 @@ export default class World {
         /* Controller */
         this.controller.init( this.player, this.camera );
 
+        /* Context menu */
+        ContextMenu.init();
+
         /* Camera */
         this.camera.init( this.player, {
             width: this.cnv.width,
@@ -206,7 +209,6 @@ export default class World {
         })
 
         // Player control
-
         this.controller.default( () => {
 
             if ( !this.player.lying && !this.player.jumping )
@@ -301,8 +303,6 @@ export default class World {
 
         this.cnv.addEventListener('contextmenu', e => {
             e.preventDefault();
-            ContextMenu.open(e.clientX, e.clientY);
-            setTimeout(() => ContextMenu.close(), 2500); // Auto-close after 2.5s
         });
 
     }
