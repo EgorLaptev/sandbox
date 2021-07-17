@@ -6,6 +6,7 @@ import Camera       from "./Camera.js";
 import Cursor       from "./Cursor.js";
 import Entity       from "./Entity.js";
 import Player       from "./Player.js";
+import Notification from "./Notification.js";
 
 export default class World {
 
@@ -80,6 +81,18 @@ export default class World {
                 y: this.cnv.height * 1.5
             },
         });
+
+        setTimeout( () => {
+            new Notification('To control the camera, use the arrow keys');
+        }, 1500);
+
+        setTimeout( () => {
+           new Notification('To control - keys W, A, S, D');
+        }, 4000);
+
+        setTimeout( () => {
+           new Notification('Entities menu open on RMB');
+        }, 7000);
 
         this.listeners();
         this.loop();
