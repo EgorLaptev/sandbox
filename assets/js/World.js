@@ -10,6 +10,8 @@ import Notification from "./Notification.js";
 import collision    from "./collision.js";
 import BlackHole from "./BlackHole.js";
 
+window.Entity = Entity;
+
 export default class World {
 
     static player     = null;
@@ -110,7 +112,7 @@ export default class World {
 
         /* Entities */
         for ( let i=0; i < Entity.list.length; i++)
-            Entity.list[i].render( ctx, this.camera);
+            Entity.list[i].render( ctx, this.camera );
 
         /* Ground */
         ctx.fillStyle = this.config.floor.color;
@@ -217,14 +219,18 @@ export default class World {
             if ( e.keyCode === 27 ) this.pause();
 
             /* E - spawn entity */
-            if ( e.keyCode === 69 && this.cursor.insert) {
+            if ( e.keyCode === 69 && this.cursor.insert ) {
                 new this.cursor.insert(this.cursor.x - this.cursor.insert.width/2 + Camera.x, this.cursor.y - this.cursor.insert.height/2 + Camera.y);
             }
 
             /* R - remove entity */
-            if ( e.keyCode === 82) {
-                for ( let i=0;i<Entity.list.length;i++) {
-                    if ( collision(this.cursor, Entity.list[i]) && Entity.list[i] !== this.player ) Entity.list.splice(i, 1);
+            if ( e.keyCode === 82 ) {
+                for (let i=0;i<Entity.list.length;i++) {
+                    if ( collision(this.cursor, Entity.list[i]) && Entity.list[i] !== this.player ) {
+                        Entity.list[i].constructor.list.splice(Entity.list[i].constructor.list.indexOf(Entity.list[i]), 1)  ;
+                        Entity.list.splice(i, 1);
+                        new Notification('Entity removed')
+                    }
                 }
             }
 
