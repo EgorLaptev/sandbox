@@ -37,6 +37,7 @@ export default class Controller {
                     this._dragndropTargets[i].x - this.camera.x + this._dragndropTargets[i].width >= e.clientX &&
                     this._dragndropTargets[i].y - this.camera.y <= e.clientY &&
                     this._dragndropTargets[i].y - this.camera.y + this._dragndropTargets[i].height >= e.clientY
+                    || this._dragndropTargets[i].dragged
                 ) {
                     this._dragndropTargets[i].dragged = true;
                     this._dragndropTargets[i].x =e.clientX + this.camera.x - this._dragndropTargets[i].width/2;
