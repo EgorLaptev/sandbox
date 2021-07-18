@@ -9,6 +9,11 @@ export default class Cursor {
     static x = 0;
     static y = 0;
 
+    static velocity = {
+        x: 0,
+        y: 0
+    }
+
     static width = 25;
     static height = 25;
 

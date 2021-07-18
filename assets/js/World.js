@@ -41,9 +41,10 @@ export default class World {
             height: this.cnv.height
         },
         gravity: {
-            power: .6,
+            power: 1,
             maxPower: 25
-        }
+        },
+        friction: 0.95
     };
 
     static paused = false;
@@ -113,9 +114,6 @@ export default class World {
         ctx.fillStyle = this.config.floor.color;
         ctx.fillRect(0, cnv.height - this.config.floor.height - this.camera.y, cnv.width, cnv.height);
 
-        /* Cursor */
-        // this.cursor.render( ctx );
-
     }
 
     static physic() {
@@ -127,10 +125,17 @@ export default class World {
             entity.x += entity.velocity.x;
             entity.y += entity.velocity.y;
 
+            this.friction(entity);
             this.gravity(entity);
             this.collisions(entity);
 
         }
+
+    }
+
+    static friction(entity) {
+
+        if ( entity.y + entity.height >= this.cnv.height - this.config.floor.height ) entity.velocity.x *= this.config.friction;
 
     }
 
@@ -142,9 +147,6 @@ export default class World {
                 entity.velocity.y += this.config.gravity.power;
             }
         } else entity.velocity.y = 0;
-
-        /* Falling */
-        entity.y += entity.velocity.y;
 
         /* Stop falling */
         if ( entity.y + entity.height >= this.cnv.height - this.config.floor.height ) {
@@ -298,8 +300,14 @@ export default class World {
         /* Cursor */
         this.cnv.addEventListener('mousemove', e => {
 
-            this.cursor.x = e.clientX - this.cursor.width/2;
-            this.cursor.y = e.clientY - this.cursor.height/2;
+            const x = e.clientX - this.cursor.width/2,
+                  y = e.clientY - this.cursor.height/2;
+
+            this.cursor.velocity.x = (x - this.cursor.x) * .3;
+            this.cursor.velocity.y = (y - this.cursor.y) * .3;
+
+            this.cursor.x = x;
+            this.cursor.y = y;
 
         })
 

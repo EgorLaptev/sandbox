@@ -26,7 +26,7 @@ export default class Player extends Entity {
 
     health     = 100;
     speed      = 5;
-    jumpPower  = 10;
+    jumpPower  = 15;
 
     jumping = false;
     lying   = false;

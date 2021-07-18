@@ -1,5 +1,7 @@
 'use strict';
 
+import Cursor from './Cursor.js';
+
 export default class Controller {
 
     static camera       = null
@@ -39,6 +41,8 @@ export default class Controller {
                     this._dragndropTargets[i].y - this.camera.y + this._dragndropTargets[i].height >= e.clientY
                     || this._dragndropTargets[i].dragged
                 ) {
+                    this._dragndropTargets[i].velocity.x = Cursor.velocity.x;
+                    this._dragndropTargets[i].velocity.y = Cursor.velocity.y;
                     this._dragndropTargets[i].dragged = true;
                     this._dragndropTargets[i].x =e.clientX + this.camera.x - this._dragndropTargets[i].width/2;
                     this._dragndropTargets[i].y =e.clientY + this.camera.y - this._dragndropTargets[i].height/2;
