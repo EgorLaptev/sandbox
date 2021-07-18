@@ -57,6 +57,7 @@ export default class World {
 
         /* Player */
         this.player = new Player(50, this.cnv.height - 50 - Player.height);
+        this.player.setStatus('stand', this.cnv, false);
 
         /* Controller */
         this.controller.init( this.player, this.camera );
@@ -122,6 +123,9 @@ export default class World {
         for ( let i=0; i < Entity.list.length; i++ ) {
 
             let entity = Entity.list[i];
+
+            entity.x += entity.velocity.x;
+            entity.y += entity.velocity.y;
 
             this.gravity(entity);
             this.collisions(entity);

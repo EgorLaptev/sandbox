@@ -10,7 +10,7 @@ export default class Entity {
 
     velocity = {
         x: 0,
-        y: 0
+        y: -5
     }
 
     constructor(x, y) {

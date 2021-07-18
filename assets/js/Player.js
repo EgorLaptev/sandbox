@@ -26,7 +26,7 @@ export default class Player extends Entity {
 
     health     = 100;
     speed      = 5;
-    jumpHeight = 125;
+    jumpPower  = 10;
 
     jumping = false;
     lying   = false;
@@ -35,12 +35,12 @@ export default class Player extends Entity {
 
     constructor(x, y) {
         super(x, y)
-        this.setStatus('stand', this.cnv, false);
     }
 
     setStatus(status, cnv, alternate = this.alternate) {
 
         if ( this.jumping && status !== 'hands_up' ) return false;
+
 
         this._status = status;
 
@@ -76,7 +76,7 @@ export default class Player extends Entity {
 
         this.setStatus('hands_up', cnv);
 
-        this.y -= this.jumpHeight;
+        this.velocity.y = -this.jumpPower;
 
         const flightCheck = setInterval( () => {
             if ( this.y + this.height >= cnv.height - 50 ) {
@@ -91,7 +91,6 @@ export default class Player extends Entity {
         if (this.jumping) return false;
         this.lying = true;
         this.setStatus('lie', cnv);
-        this.y = cnv.height - this.height;
         setTimeout( ()=> this.lying = false, 100 );
     }
 
