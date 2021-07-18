@@ -217,22 +217,14 @@ export default class World {
             if ( e.keyCode === 27 ) this.pause();
 
             /* E - spawn entity */
-            if ( e.keyCode === 69 && this.cursor.insert) {
+            if ( e.keyCode === 69 && this.cursor.insert)
+                new this.cursor.insert(this.cursor.x - this.cursor.insert.width/2 + Camera.x, this.cursor.y - this.cursor.insert.height/2 + Camera.y);
 
-                let coll = false;
-
-                for (let i=0;i<Entity.list.length;i++)
-                    if ( collision({
-                        x: this.cursor.x - this.cursor.insert.width/2 + Camera.x,
-                        y: this.cursor.y - this.cursor.insert.height/2 + Camera.y,
-                        width: this.cursor.insert.width,
-                        height: this.cursor.insert.height
-                    }, Entity.list[i]) ) coll = true;
-
-
-                if (!coll) new this.cursor.insert(this.cursor.x - this.cursor.insert.width/2 + Camera.x, this.cursor.y - this.cursor.insert.height/2 + Camera.y);
-
-            }
+            /* R - remove entity */
+            if ( e.keyCode === 82)
+                for ( let i=0;i<Entity.list.length;i++)
+                    if ( collision(this.cursor, Entity.list[i]) )
+                        Entity.list.splice(i, 1);
 
             /* Q - open context menu */
             if ( e.keyCode === 81 ) {
@@ -363,6 +355,10 @@ export default class World {
         setTimeout( () => {
            new Notification('E - to spawn entity');
         }, 10000);
+
+        setTimeout( () => {
+           new Notification('R - to remove entity');
+        }, 12000);
 
     }
 
