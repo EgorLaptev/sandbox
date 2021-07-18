@@ -13,6 +13,9 @@ export default class Entity {
         y: -10
     }
 
+    weight = 1;
+    static = false;
+
     constructor(x, y) {
 
         this.x = x;

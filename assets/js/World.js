@@ -8,6 +8,7 @@ import Entity       from "./Entity.js";
 import Player       from "./Player.js";
 import Notification from "./Notification.js";
 import collision    from "./collision.js";
+import BlackHole from "./BlackHole.js";
 
 export default class World {
 
@@ -98,7 +99,6 @@ export default class World {
 
     static render() {
 
-
         const cnv = this.cnv,
               ctx = this.ctx;
 
@@ -124,12 +124,39 @@ export default class World {
 
             let entity = Entity.list[i];
 
-            entity.x += entity.velocity.x;
-            entity.y += entity.velocity.y;
+            if ( !entity.static ) {
+                entity.x += entity.velocity.x;
+                entity.y += entity.velocity.y;
+            }
 
             this.friction(entity);
             this.gravity(entity);
             this.collisions(entity);
+            this.attractive(entity);
+
+        }
+
+    }
+
+    static attractive(entity) {
+
+        /* Blackholes */
+        for ( let i=0; i<BlackHole.list.length;i++) {
+
+            let blackHole = BlackHole.list[i];
+
+            if ( blackHole === entity ) return false;
+
+            const dist = {
+                x: blackHole.x + blackHole.width/2 - entity.x - entity.width/2,
+                y: blackHole.y + blackHole.height/2 - entity.y - entity.height/2
+            }
+
+            entity.velocity.x += dist.x / 50;
+            entity.velocity.y += dist.y / 50;
+
+            entity.velocity.x *= 0.95;
+            entity.velocity.y *= 0.95;
 
         }
 
@@ -193,8 +220,6 @@ export default class World {
             if ( e.keyCode === 69 && this.cursor.insert) {
 
                 let coll = false;
-
-                console.log(coll);
 
                 for (let i=0;i<Entity.list.length;i++)
                     if ( collision({
