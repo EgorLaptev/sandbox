@@ -9,8 +9,7 @@ import Player       from "./Player.js";
 import Notification from "./Notification.js";
 import collision    from "./collision.js";
 import BlackHole from "./BlackHole.js";
-
-window.Entity = Entity;
+import Config from "./Config.js";
 
 export default class World {
 
@@ -22,36 +21,7 @@ export default class World {
     static cnv = document.getElementById('world');
     static ctx = this.cnv.getContext('2d');
 
-    static config = {
-        audio: {
-            src: '',
-            volume: 1,
-            repeat: true
-        },
-        bg: {
-            color: '#222',
-            src: 'assets/media/images/bg.PNG',
-            offset: {
-                x: 0,
-                y: 0
-            }
-        },
-        floor: {
-          height: 50,
-          color: '#090909'
-        },
-        map: {
-            width: 250,
-            height: this.cnv.height
-        },
-        gravity: {
-            power: 1,
-            maxPower: 25
-        },
-        friction: 0.95,
-        attraction: 1
-    };
-
+    static config = new Config;
     static paused = false;
 
     static init() {
@@ -59,7 +29,7 @@ export default class World {
         /* Canvas options */
         this.cnv.width  = window.innerWidth;
         this.cnv.height = window.innerHeight;
-        if ( this.config.bg.src ) this.cnv.style.background = `${ this.config.bg?.color } url( ${ this.config.bg.src } ) ${ this.config.bg.offset.x }px ${ this.config.bg.offset.y }px`;
+        if ( this.config.background.src ) this.cnv.style.background = `${ this.config.background?.color } url( ${ this.config.background.src } ) ${ this.config.background.offset.x }px ${ this.config.background.offset.y }px`;
 
         /* Player */
         this.player = new Player(50, this.cnv.height - 50 - Player.height);
@@ -105,7 +75,7 @@ export default class World {
               ctx = this.ctx;
 
         /* Background */
-        if ( this.config.bg.src )  cnv.style.backgroundPosition = `${ this.config.bg.offset.x }px ${ this.config.bg.offset.y }px`;
+        if ( this.config.background.src )  cnv.style.backgroundPosition = `${ this.config.background.offset.x }px ${ this.config.background.offset.y }px`;
 
         /* Clear world */
         ctx.clearRect(0, 0, cnv.width, cnv.height);
@@ -227,7 +197,7 @@ export default class World {
             if ( e.keyCode === 82 ) {
                 for (let i=0;i<Entity.list.length;i++) {
                     if ( collision(this.cursor, Entity.list[i]) && Entity.list[i] !== this.player ) {
-                        Entity.list[i].constructor.list.splice(Entity.list[i].constructor.list.indexOf(Entity.list[i]), 1)  ;
+                        Entity.list[i].constructor.list.splice(Entity.list[i].constructor.list.indexOf(Entity.list[i]), 1);
                         Entity.list.splice(i, 1);
                         new Notification('Entity removed')
                     }
@@ -256,7 +226,7 @@ export default class World {
 
             if ( this.player.x - this.camera.x < this.camera.scrollEdge && this.player.x - this.camera.scrollEdge >= 0 ) {
                 this.camera.x -= this.player.speed;
-                this.config.bg.offset.x += this.player.speed;
+                this.config.background.offset.x += this.player.speed;
             }
 
             this.player.x -= this.player._status === 'lie' ? this.player.speed/2 : this.player.speed;
@@ -272,7 +242,7 @@ export default class World {
 
             if ( this.player.x - this.camera.x + this.player.width > this.camera.width - this.camera.scrollEdge && this.player.x + this.player.width + this.camera.scrollEdge <= this.camera.limit.x ) {
                 this.camera.x += this.player.speed;
-                this.config.bg.offset.x -= this.player.speed;
+                this.config.background.offset.x -= this.player.speed;
             }
 
             this.player.x += this.player._status === 'lie' ? this.player.speed/2 : this.player.speed;
@@ -295,7 +265,7 @@ export default class World {
         this.controller.bind(37, () => {
             if( this.camera.x > 0 ) {
                 this.camera.x -= this.camera.speed;
-                this.config.bg.offset.x += this.camera.speed;
+                this.config.background.offset.x += this.camera.speed;
             }
 
         });
@@ -304,7 +274,7 @@ export default class World {
         this.controller.bind(38, () => {
             if( -this.camera.y + this.camera.height < this.camera.limit.y ) {
                 this.camera.y -= this.camera.speed;
-                this.config.bg.offset.y += this.camera.speed;
+                this.config.background.offset.y += this.camera.speed;
             }
 
         });
@@ -313,7 +283,7 @@ export default class World {
         this.controller.bind(39, () => {
             if( this.camera.x + this.camera.width < this.camera.limit.x ) {
                 this.camera.x += this.camera.speed;
-                this.config.bg.offset.x -= this.camera.speed;
+                this.config.background.offset.x -= this.camera.speed;
             }
         });
 
@@ -321,7 +291,7 @@ export default class World {
         this.controller.bind(40, () => {
             if( this.camera.y < 25) {
                 this.camera.y += this.camera.speed;
-                this.config.bg.offset.y -= this.camera.speed;
+                this.config.background.offset.y -= this.camera.speed;
             }
         });
 
