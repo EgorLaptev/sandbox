@@ -16,6 +16,8 @@ import CartoonBox from "./CartoonBox.js";
 import KittenCartoonBox from "./KittenCartoonBox.js";
 import OpenCartoonBox from "./OpenCartoonBox.js";
 import OpenLargeCartoonBox from "./OpenLargeCartoonBox.js";
+import BlackHole from "./BlackHole.js";
+import Stone from "./Stone.js";
 
 export default class Sidebar {
 
@@ -38,7 +40,9 @@ export default class Sidebar {
         CartoonBox,
         KittenCartoonBox,
         OpenCartoonBox,
-        OpenLargeCartoonBox
+        OpenLargeCartoonBox,
+        BlackHole,
+        Stone
     ];
 
     static init() {

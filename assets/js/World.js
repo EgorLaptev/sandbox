@@ -1,12 +1,13 @@
 'use strict';
 
-import Sidebar  from "./Sidebar.js";
+import Sidebar      from "./Sidebar.js";
 import Controller   from "./Controller.js";
 import Camera       from "./Camera.js";
 import Cursor       from "./Cursor.js";
 import Entity       from "./Entity.js";
 import Player       from "./Player.js";
 import Notification from "./Notification.js";
+import collision    from "./collision.js";
 
 export default class World {
 
@@ -44,7 +45,8 @@ export default class World {
             power: 1,
             maxPower: 25
         },
-        friction: 0.95
+        friction: 0.95,
+        attraction: 1
     };
 
     static paused = false;
@@ -142,10 +144,12 @@ export default class World {
     static gravity(entity) {
 
         /* Overclocking */
-        if ( entity.y + entity.height < this.cnv.height - this.config.floor.height && !entity.dragged) {
-            if ( entity.velocity.y < this.config.gravity.maxPower ) {
+        if ( entity.y + entity.height < this.cnv.height - this.config.floor.height && !entity.dragged ) {
+
+            if ( entity.velocity.y < this.config.gravity.maxPower) {
                 entity.velocity.y += this.config.gravity.power;
             }
+
         } else entity.velocity.y = 0;
 
         /* Stop falling */
@@ -156,22 +160,6 @@ export default class World {
     }
 
     static collisions(entity) {
-
-        for ( let i=0; i < Entity.list.length; i++ ) {
-
-            const entity2 = Entity.list[i];
-
-            if (
-                entity.y <= (entity2.y + entity2.height) &&
-                entity.x <= (entity2.x + entity2.width) &&
-                (entity.x + entity.width) >= entity2.x &&
-                (entity.y + entity.height) >= entity2.y &&
-                entity !== entity2
-            ) {
-
-            }
-
-        }
 
     }
 
@@ -202,8 +190,24 @@ export default class World {
             if ( e.keyCode === 27 ) this.pause();
 
             /* E - spawn entity */
-            if ( e.keyCode === 69 && this.cursor.insert)
-                new this.cursor.insert(this.cursor.x - this.cursor.insert.width/2 + Camera.x, this.cursor.y - this.cursor.insert.height/2 + Camera.y);
+            if ( e.keyCode === 69 && this.cursor.insert) {
+
+                let coll = false;
+
+                console.log(coll);
+
+                for (let i=0;i<Entity.list.length;i++)
+                    if ( collision({
+                        x: this.cursor.x - this.cursor.insert.width/2 + Camera.x,
+                        y: this.cursor.y - this.cursor.insert.height/2 + Camera.y,
+                        width: this.cursor.insert.width,
+                        height: this.cursor.insert.height
+                    }, Entity.list[i]) ) coll = true;
+
+
+                if (!coll) new this.cursor.insert(this.cursor.x - this.cursor.insert.width/2 + Camera.x, this.cursor.y - this.cursor.insert.height/2 + Camera.y);
+
+            }
 
             /* Q - open context menu */
             if ( e.keyCode === 81 ) {
@@ -223,7 +227,7 @@ export default class World {
         /* Left */
         this.controller.bind(65, () => {
 
-            if ( this.player.x <= 0 ) return false;
+            if ( this.player.x <= 0) return false;
 
             if ( this.player.x - this.camera.x < this.camera.scrollEdge && this.player.x - this.camera.scrollEdge >= 0 ) {
                 this.camera.x -= this.player.speed;
