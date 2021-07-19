@@ -22,7 +22,9 @@ export default class Entity {
         this.y = y;
 
         Controller.dragndrop(this);
+
         Entity.list.push(this);
+
     }
 
     render(ctx, camera) {
@@ -32,7 +34,16 @@ export default class Entity {
 
         ctx.drawImage(texture, this.x - camera.x, this.y - camera.y, this.width, this.height);
 
-        return true;
+    }
+
+    remove() {
+
+        let indexInEntity = Entity.list.indexOf(this),
+            indexInParent = this.constructor.list.indexOf(this);
+
+        /* Deleting entity */
+        Entity.list.splice(indexInEntity, 1);
+        this.constructor.list.splice(indexInParent, 1);
 
     }
 

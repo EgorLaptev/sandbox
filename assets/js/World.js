@@ -160,6 +160,10 @@ export default class World {
 
     static collisions(entity) {
 
+        for (let i=0;i<BlackHole.list.length;i++)
+            if (collision(entity, BlackHole.list[i]) && entity !== BlackHole.list[i] && entity !== this.player)
+                entity.remove();
+
     }
 
     static pause() {
@@ -197,9 +201,8 @@ export default class World {
             if ( e.keyCode === 82 ) {
                 for (let i=0;i<Entity.list.length;i++) {
                     if ( collision(this.cursor, Entity.list[i]) && Entity.list[i] !== this.player ) {
-                        Entity.list[i].constructor.list.splice(Entity.list[i].constructor.list.indexOf(Entity.list[i]), 1);
-                        Entity.list.splice(i, 1);
-                        new Notification('Entity removed')
+                        Entity.list[i].remove();
+                        new Notification('Entity removed');
                     }
                 }
             }
