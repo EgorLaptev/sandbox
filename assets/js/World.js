@@ -75,7 +75,7 @@ export default class World {
               ctx = this.ctx;
 
         /* Background */
-        if ( this.config.background.src )  cnv.style.backgroundPosition = `${ this.config.background.offset.x }px ${ this.config.background.offset.y }px`;
+        if ( this.config.background.src ) cnv.style.backgroundPosition = `${ this.config.background.offset.x }px ${ this.config.background.offset.y }px`;
 
         /* Clear world */
         ctx.clearRect(0, 0, cnv.width, cnv.height);
@@ -96,12 +96,14 @@ export default class World {
 
             let entity = Entity.list[i];
 
-            if ( !entity.static ) {
+            if ( !entity.static && !entity.dragged ) {
                 entity.x += entity.velocity.x;
                 entity.y += entity.velocity.y;
             }
 
-            this.friction(entity);
+            /* friction */
+            if ( entity.y + entity.height >= this.cnv.height - this.config.floor.height ) entity.velocity.x *= this.config.friction;
+
             this.gravity(entity);
             this.collisions(entity);
             this.attractive(entity);
@@ -127,16 +129,10 @@ export default class World {
             entity.velocity.x += dist.x / 50;
             entity.velocity.y += dist.y / 50;
 
-            entity.velocity.x *= 0.95;
-            entity.velocity.y *= 0.95;
+            if(entity.velocity.x > 2) entity.velocity.x *= 0.95;
+            if(entity.velocity.y > 2) entity.velocity.y *= 0.95;
 
         }
-
-    }
-
-    static friction(entity) {
-
-        if ( entity.y + entity.height >= this.cnv.height - this.config.floor.height ) entity.velocity.x *= this.config.friction;
 
     }
 
@@ -225,7 +221,7 @@ export default class World {
         /* Left */
         this.controller.bind(65, () => {
 
-            if ( this.player.x <= 0) return false;
+            if ( this.player.x <= 0 || this.player.dragged ) return false;
 
             if ( this.player.x - this.camera.x < this.camera.scrollEdge && this.player.x - this.camera.scrollEdge >= 0 ) {
                 this.camera.x -= this.player.speed;
@@ -241,7 +237,7 @@ export default class World {
         /* Right */
         this.controller.bind(68, () => {
 
-            if ( this.player.x + this.player.width >= this.camera.limit.x ) return false;
+            if ( this.player.x + this.player.width >= this.camera.limit.x || this.player.dragged ) return false;
 
             if ( this.player.x - this.camera.x + this.player.width > this.camera.width - this.camera.scrollEdge && this.player.x + this.player.width + this.camera.scrollEdge <= this.camera.limit.x ) {
                 this.camera.x += this.player.speed;
