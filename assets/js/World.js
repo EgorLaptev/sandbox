@@ -196,7 +196,12 @@ export default class World {
             /* R - remove entity */
             if ( e.keyCode === 82 ) {
                 for (let i=0;i<Entity.list.length;i++) {
-                    if ( collision(this.cursor, Entity.list[i]) && Entity.list[i] !== this.player ) {
+                    if ( collision({
+                        x: this.cursor.x + this.camera.x,
+                        y: this.cursor.y + this.camera.y,
+                        width: this.cursor.width,
+                        height: this.cursor.height
+                    }, Entity.list[i]) && Entity.list[i] !== this.player ) {
                         Entity.list[i].remove();
                         new Notification('Entity removed');
                     }
