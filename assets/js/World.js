@@ -8,12 +8,12 @@ import Entity       from "./Entity.js";
 import Player       from "./Player.js";
 import Notification from "./Notification.js";
 import collision    from "./collision.js";
-import BlackHole from "./BlackHole.js";
-import config from "./config.js";
+import BlackHole    from "./BlackHole.js";
+import config       from "./config.js";
 
 export default class World {
 
-    static player     = null;q
+    static player     = null;
     static controller = Controller;
     static camera     = Camera;
     static cursor     = Cursor;
@@ -47,8 +47,8 @@ export default class World {
             height: this.cnv.height,
             scrollEdge: 100,
             limit: {
-                x: this.cnv.width * 2,
-                y: this.cnv.height * 1.5
+                x: this.config.map.width,
+                y: this.config.map.height
             },
         });
 
@@ -102,7 +102,7 @@ export default class World {
             }
 
             /* friction */
-            if ( entity.y + entity.height >= this.cnv.height - this.config.floor.height ) entity.velocity.x *= this.config.friction;
+            if ( entity.onGround ) entity.velocity.x *= this.config.friction;
 
             this.gravity(entity);
             this.collisions(entity);
@@ -139,10 +139,19 @@ export default class World {
     static gravity(entity) {
 
         /* Overclocking */
-        if ( entity.y + entity.height < this.cnv.height - this.config.floor.height && !entity.dragged ) {
+        if ( entity.y + entity.height < this.cnv.height - this.config.floor.height && !entity.dragged) {
 
             if ( entity.velocity.y < this.config.gravity.maxPower) {
                 entity.velocity.y += this.config.gravity.power;
+            }
+
+            for ( let i=0;i<Entity.list.length;i++) {
+                if ( collision(Entity.list[i], entity)) {
+                    entity.y -= entity.velocity.y;
+                    entity.velocity.y = 0;
+                    entity.onGround = true;
+                    if ( entity == this.player ) this.player.jumping = false;
+                }
             }
 
         } else entity.velocity.y = 0;
@@ -150,15 +159,30 @@ export default class World {
         /* Stop falling */
         if ( entity.y + entity.height >= this.cnv.height - this.config.floor.height ) {
             entity.y = this.cnv.height - this.config.floor.height - entity.height;
+            entity.onGround = true;
         }
 
     }
 
     static collisions(entity) {
 
+        /* Blackholes */
         for (let i=0;i<BlackHole.list.length;i++)
             if (collision(entity, BlackHole.list[i]) && entity !== BlackHole.list[i] && entity !== this.player)
                 entity.remove();
+
+        /* Player */
+
+
+        for ( let i=0;i<Entity.list.length;i++ ) {
+            if ( collision(Entity.list[i], entity) && entity !== this.player) {
+
+                if ( Entity.list[i].x < entity.x ) entity.velocity.x += .5;
+                else if ( Entity.list[i].x > entity.x ) entity.velocity.x -= .5;
+
+            }
+        }
+
 
     }
 

@@ -50,3 +50,15 @@ body * {
     -webkit-user-drag: none;
     cursor:url(../media/images/cursor/cursor-active.png), auto;
 }
+
+#optionsMenu {
+    position: absolute;
+    inset: 0;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 25px;
+    color: white;
+    font-family: sans-serif;
+}

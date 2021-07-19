@@ -15,6 +15,7 @@ export default class Entity {
 
     weight = 1;
     static = false;
+    onGround = false;
 
     constructor(x, y) {
 

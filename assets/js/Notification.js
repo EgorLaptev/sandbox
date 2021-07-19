@@ -12,7 +12,7 @@ export default class Notification {
         },
         color: '#222',
         class: 'game-notification',
-        time: 10 // In seconds
+        time: 10 // Live time in seconds
     }
 
     constructor(content) {

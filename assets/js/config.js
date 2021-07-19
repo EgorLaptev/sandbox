@@ -22,8 +22,8 @@ export default {
     },
 
     map: {
-        width: 250,
-        height: 250
+        width: 2000,
+        height: 1500
     },
 
     gravity: {
