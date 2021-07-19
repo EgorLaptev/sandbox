@@ -9,11 +9,11 @@ import Player       from "./Player.js";
 import Notification from "./Notification.js";
 import collision    from "./collision.js";
 import BlackHole from "./BlackHole.js";
-import Config from "./Config.js";
+import config from "./config.js";
 
 export default class World {
 
-    static player     = null;
+    static player     = null;q
     static controller = Controller;
     static camera     = Camera;
     static cursor     = Cursor;
@@ -21,7 +21,7 @@ export default class World {
     static cnv = document.getElementById('world');
     static ctx = this.cnv.getContext('2d');
 
-    static config = new Config;
+    static config = config;
     static paused = false;
 
     static init() {

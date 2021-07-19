@@ -1,6 +1,7 @@
 'use strict';
 
 import Entity from "./Entity.js";
+import config from "./config.js";
 
 export default class Player extends Entity {
 
@@ -79,7 +80,7 @@ export default class Player extends Entity {
         this.velocity.y = -this.jumpPower;
 
         const flightCheck = setInterval( () => {
-            if ( this.y + this.height >= cnv.height - 50 ) {
+            if ( this.y + this.height >= cnv.height - config.floor.height ) {
                 this.jumping = false;
                 clearInterval(flightCheck);
             }
